@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+    <title>Validate me</title>
+    <style>
+      form {
+        display: block;
+      }   
+      form ,
+      textarea {
+        display: block;
+      }
+      form label {
+        display: block;
+        color: red;
+      }
+    </style>
+    <script>
+      const inputs = {};
+      const inputsByName = {};
+      function validateMe() {
+        for (let i = 0; i < document.forms[0].length; i++) {
+          if (document.forms[0].elements[i].type === "checkbox")
+            if (document.forms[0].elements[i].checked) delete inputs.checkbox;
+          if (document.forms[0].elements[i].type === "radio")
+            if (document.forms[0].elements[i].checked) delete inputs.radio;
+          if (document.forms[0].elements[i].type === "text")
+            if (!!document.forms[0].elements[i].value) delete inputs.text;
+          if (document.forms[0].elements[i].type === "select-one")
+            if (!!document.forms[0].elements[i].value)
+              delete inputs["select-one"];
+          if (document.forms[0].elements[i].type === "textarea")
+            if (!!document.forms[0].elements[i].value) delete inputs.textarea;
+        }
+
+        let errorMessage = ["Missing:"];
+        Object.entries(inputs).forEach((key, value) =>
+          errorMessage.push(` ${key[0]}`)
+        );
+
+        if (Object.keys(inputs).length > 1) {
+          for (let prop in inputs) {
+            let newNode = document.createElement("span");
+
+            let label = document.getElementsByClassName(prop)[0]
+              ?.previousSibling.previousSibling;
+            if (label) {
+              label.innerHTML = 'sdf';
+              if (label.id === "fullNamelable") {
+                
+                label.innerHTML = "Please enter Name";
+              }
+              if (label.id === "genderlable") {
+                label.innerHTML = "Please select Gender";
+              }
+              if (label.id === "hobbieslable") {
+                label.innerHTML = "Please select Hobbies";
+              }
+
+              if (label.id === "commentslable") {
+                label.innerHTML = "Please Enter Comment";
+              }
+            }
+          }
+        }
+
+        return Object.keys(inputs).length === 1;
+      }
+
+      // console.log(document.getElementsByName(Object.keys(inputs)[0]))
+    </script>
+  </head>
+  <body>
+    At least one piece of data has to come in from every input type.
+    <form
+      id="form"
+      action="form.html"
+      method="get"
+      onsubmit="return validateMe();"
+    >
+      <label for="fullname" id="fullNamelable"></label>
+      Name:<input
+        type="text"
+        name="fullname"
+        class="text"
+        placeholder="Enter Full Name"
+      /><br />
+      <label for="gender" id="genderlable"></label>
+     
+        Gender: Male<input
+          type="radio"
+          name="gender"
+          value="male"
+          class="radio"
+        />Female<input
+          type="radio"
+          name="gender"
+          value="female"
+          class="radio"
+        />
+   
+      <br />
+      Hobbies
+      <label for="hobbies[]" id="hobbieslable"></label>     
+        Baseball
+        <input
+          type="checkbox"
+          name="hobbies[]"
+          value="baseball"
+          class="checkbox"
+        />
+        Football
+        <input
+          type="checkbox"
+          name="hobbies[]"
+          value="football"
+          class="checkbox"
+        />
+        Hockey
+        <input
+          type="checkbox"
+          name="hobbies[]"
+          value="hockey"
+          class="checkbox"
+        />
+     
+      
+   
+        <label for="show" id="showlable"></label>
+        Favorite Show
+        <select name="show" class="select-one">
+          <option value="">Choose Below</option>
+          <option value="ATHF">Aqua Teen Hunger Force</option>
+          <option value="Family Guy">Family Guy</option>
+          <option value="Simpsons">Simpsons</option>
+        </select>
+     
+
+      <label for="comments" id="commentslable"></label>
+      Comments
+      <textarea cols="50" rows="6" name="comments" class="textarea"></textarea>
+      <input type="submit" name="submit" value="enter me" />
+    </form>
+    <script>
+      for (let i = 0; i < document.forms[0].length; i++) {
+        inputs[document.forms[0].elements[i].type] = "false";
+        inputsByName[document.forms[0].elements[i].className] = " ";
+      }
+    </script>
+  </body>
+</html>

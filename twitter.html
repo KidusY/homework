@@ -1,0 +1,49 @@
+<html>
+  <head> </head>
+  <body>
+    <form action="" method="post">
+      <input
+        type="text"
+        name="fullname"
+        id="fullname"
+        placeholder="fullname"
+      /><span class="err"></span><br />
+      <div id="showcomment">
+        You have <span id="numleft">255</span> characters of your 255 left!
+      </div>
+      <textarea id="comments" maxlength="255"></textarea>
+      <input type="submit" name="submit" value="Enter" />
+    </form>
+  </body>
+
+  <script>
+    document
+      .querySelector("#comments")
+      .addEventListener("keydown", showComment);
+
+    function showComment(e) {
+      let numLeft = document.getElementById("numleft").innerHTML;
+      let input = document.querySelector("#comments");
+      const { keyCode, code } = e;
+
+      if (code === "Backspace") {
+        if (numLeft < 255) numLeft = Number(numLeft) + 1;
+        document.querySelector("#numleft").innerHTML = numLeft;
+      } else {
+        if (/^[a-zA-Z0-9\\.;,:,,,' ]{1,100}$/g.test(String.fromCharCode(keyCode))) {
+          if (input.value.length > 255) {
+            input.value = null;
+            return;
+          }
+          if (input.value.length === 0)
+            document.querySelector("#numleft").innerHTML = 255;
+
+          if (Number(numLeft) > 0) {
+            numLeft = Number(numLeft) - 1;
+            document.querySelector("#numleft").innerHTML = numLeft;
+          }
+        }
+      }
+    }
+  </script>
+</html>
